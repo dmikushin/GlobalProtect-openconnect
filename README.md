@@ -44,6 +44,12 @@ Without client-server separation, we have to run with elevated priviledges:
 sudo ./gpagent
 ```
 
+# Docker
+
+```
+docker build -t gpagent-docker .
+```
+
 ## Passing the Custom Parameters to `OpenConnect` CLI
 
 See [Configuration](https://github.com/yuezk/GlobalProtect-openconnect/wiki/Configuration)

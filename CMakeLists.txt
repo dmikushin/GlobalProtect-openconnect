@@ -68,6 +68,6 @@ endif()
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/com.yuezk.qt.gpclient.metainfo.xml" DESTINATION share/metainfo)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/com.yuezk.qt.gpclient.desktop" DESTINATION share/applications)
-install(FILES "com.yuezk.qt.gpclient.svg" DESTINATION share/icons/hicolor/scalable/apps)
-install(FILES "gp.conf" DESTINATION /etc/gpservice)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/com.yuezk.qt.gpclient.svg" DESTINATION share/icons/hicolor/scalable/apps)
+install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/gp.conf" DESTINATION /etc/gpservice)
 
