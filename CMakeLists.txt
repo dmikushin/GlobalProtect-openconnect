@@ -39,7 +39,7 @@ add_subdirectory(ThirdParty/SingleApplication)
 configure_file(src/com.yuezk.qt.gpclient.desktop.in com.yuezk.qt.gpclient.desktop)
 configure_file(src/com.yuezk.qt.gpclient.metainfo.xml.in com.yuezk.qt.gpclient.metainfo.xml)
 
-file(GLOB ${PROJECT_NAME}_SRCS "include/*.h" "src/*.cpp")
+file(GLOB ${PROJECT_NAME}_SRCS "include/*.h" "src/*.cpp" "src/*.qrc")
 add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
