@@ -1,24 +1,17 @@
+#include <QApplication>
 #include <QtCore/QFileInfo>
 #include <QtCore/QDateTime>
 #include <QtCore/QVariant>
 #include <QtCore/QRegularExpression>
 #include <QtCore/QRegularExpressionMatch>
-#include <QtDBus/QtDBus>
 
 #include "INIReader.h"
 #include "gpservice.h"
-#include "gpserviceadaptor.h"
 
 GPService::GPService(QObject *parent)
     : QObject(parent)
     , openconnect(new QProcess)
 {
-    // Register the DBus service
-    new GPServiceAdaptor(this);
-    QDBusConnection dbus = QDBusConnection::systemBus();
-    dbus.registerObject("/", this);
-    dbus.registerService("com.yuezk.qt.GPService");
-
     // Setup the openconnect process
     QObject::connect(openconnect, &QProcess::started, this, &GPService::onProcessStarted);
     QObject::connect(openconnect, &QProcess::errorOccurred, this, &GPService::onProcessError);
@@ -107,7 +100,7 @@ void GPService::quit()
     }
 }
 
-void GPService::connect(QString server, QString username, QString passwd)
+void GPService::connect(const QString &server, const QString &username, const QString &passwd)
 {
     if (vpnStatus != GPService::VpnNotConnected) {
         log("VPN status is: " + QVariant::fromValue(vpnStatus).toString());

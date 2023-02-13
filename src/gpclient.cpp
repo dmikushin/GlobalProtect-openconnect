@@ -389,7 +389,7 @@ void GPClient::onGatewaySuccess(const QString &authCookie)
     for (GPGateway &gw : allGateways()) {
       gatewayAddresses.push_back(gw.address());
     }
-    vpn->connect(currentGateway().address(), gatewayAddresses, portalConfig.username(), authCookie);
+    vpn->connect(currentGateway().address(), portalConfig.username(), authCookie);
     ui->statusLabel->setText("Connecting...");
     updateConnectionStatus(VpnStatus::pending);
 }

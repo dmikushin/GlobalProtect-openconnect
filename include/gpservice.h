@@ -4,18 +4,20 @@
 #include <QtCore/QObject>
 #include <QtCore/QProcess>
 
+#include "vpn.h"
+
 static QList<QString> binaryPaths = QList<QString>() <<
     "/usr/local/bin/openconnect" <<
-     "/usr/local/sbin/openconnect" <<
-     "/usr/bin/openconnect" <<
-     "/usr/sbin/openconnect" <<
-     "/opt/bin/openconnect" <<
-     "/opt/sbin/openconnect";
+    "/usr/local/sbin/openconnect" <<
+    "/usr/bin/openconnect" <<
+    "/usr/sbin/openconnect" <<
+    "/opt/bin/openconnect" <<
+    "/opt/sbin/openconnect";
 
-class GPService : public QObject
+class GPService : public QObject, public IVpn
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", "com.yuezk.qt.GPService")
+    Q_INTERFACES(IVpn)
 public:
     explicit GPService(QObject *parent = nullptr);
     ~GPService();
@@ -36,7 +38,7 @@ signals:
     void logAvailable(QString log);
 
 public slots:
-    void connect(QString server, QString username, QString passwd);
+    void connect(const QString &server, const QString &username, const QString &passwd);
     void disconnect();
     int status();
 

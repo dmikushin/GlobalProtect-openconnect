@@ -8,11 +8,10 @@
 
 #include "singleapplication.h"
 #include "gpclient.h"
-#include "vpn_dbus.h"
-#include "vpn_json.h"
 #include "enhancedwebview.h"
 #include "sigwatch.h"
 #include "version.h"
+#include "gpservice.h"
 
 #define QT_AUTO_SCREEN_SCALE_FACTOR "QT_AUTO_SCREEN_SCALE_FACTOR"
 
@@ -43,7 +42,6 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument("server", "The URL of the VPN server. Optional.");
     parser.addPositionalArgument("gateway", "The URL of the specific VPN gateway. Optional.");
     parser.addOptions({
-      {"json", "Write the result of the handshake with the GlobalConnect server to stdout as JSON and terminate. Useful for scripting."},
       {"now", "Do not show the dialog with the connect button; connect immediately instead."},
       {"start-minimized", "Launch the client minimized."},
       {"reset", "Reset the client's settings."},
@@ -52,9 +50,16 @@ int main(int argc, char *argv[])
 
     const auto positional = parser.positionalArguments();
 
-    auto *vpn = parser.isSet("json") // yes it leaks, but this is cleared on exit anyway
-      ? static_cast<IVpn*>(new VpnJson(nullptr)) // Print to stdout and exit
-      : static_cast<IVpn*>(new VpnDbus(nullptr)); // Contact GPService daemon via dbus
+    GPService service;
+
+    UnixSignalWatcher sigwatch;
+    sigwatch.watchForSignal(SIGINT);
+    sigwatch.watchForSignal(SIGTERM);
+    sigwatch.watchForSignal(SIGQUIT);
+    sigwatch.watchForSignal(SIGHUP);
+    QObject::connect(&sigwatch, &UnixSignalWatcher::unixSignal, &service, &GPService::quit);
+
+    auto *vpn = static_cast<IVpn*>(&service);
     GPClient w(nullptr, vpn);
 
     if (positional.size() > 0) {
@@ -69,16 +74,7 @@ int main(int argc, char *argv[])
 
     QObject::connect(&app, &SingleApplication::instanceStarted, &w, &GPClient::activate);
 
-    UnixSignalWatcher sigwatch;
-    sigwatch.watchForSignal(SIGINT);
-    sigwatch.watchForSignal(SIGTERM);
-    sigwatch.watchForSignal(SIGQUIT);
-    sigwatch.watchForSignal(SIGHUP);
     QObject::connect(&sigwatch, &UnixSignalWatcher::unixSignal, &w, &GPClient::quit);
-
-    if (parser.isSet("json")) {
-        QObject::connect(static_cast<VpnJson*>(vpn), &VpnJson::connected, &w, &GPClient::quit);
-    }
 
     if (parser.isSet("reset")) {
         w.reset();
@@ -94,3 +90,4 @@ int main(int argc, char *argv[])
 
     return app.exec();
 }
+
