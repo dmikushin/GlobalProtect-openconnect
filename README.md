@@ -2,6 +2,10 @@
 
 This is an implementation of GlobalProtect as a single executable, without client-server separation.
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/3297602/133869036-5c02b0d9-c2d9-4f87-8c81-e44f68cfd6ac.png">
+</p>
+
 ## Features
 
 - Similar user experience as the official client in macOS.
@@ -34,7 +38,11 @@ cmake --install .
 
 ## Run
 
-Once the software is installed, you can run `gpagent` to start the UI.
+Without client-server separation, we have to run with elevated priviledges:
+
+```
+sudo ./gpagent
+```
 
 ## Passing the Custom Parameters to `OpenConnect` CLI
 
@@ -44,8 +52,9 @@ See [Configuration](https://github.com/yuezk/GlobalProtect-openconnect/wiki/Conf
 
 Install the [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/) extension and you will see the system tray icon (Restart the system after the installation).
 
-<img src="https://user-images.githubusercontent.com/3297602/130831022-b93492fd-46dd-4a8e-94a4-13b5747120b7.png" />
-
+<p>
+  <img src="https://user-images.githubusercontent.com/3297602/130831022-b93492fd-46dd-4a8e-94a4-13b5747120b7.png" />
+</p>
 
 ## Troubleshooting
 
