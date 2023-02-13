@@ -3,10 +3,15 @@
 
 #include <QtCore/QObject>
 
-#include "standardloginwindow.h"
-#include "challengedialog.h"
 #include "loginparams.h"
 #include "gatewayauthenticatorparams.h"
+
+namespace gp {
+
+namespace gui {
+
+class StandardLoginWindow;
+class ChallengeDialog;
 
 class GatewayAuthenticator : public QObject
 {
@@ -34,15 +39,19 @@ private:
     GatewayAuthenticatorParams params;
     QString preloginUrl;
     QString loginUrl;
-
+    
     StandardLoginWindow *standardLoginWindow { nullptr };
     ChallengeDialog *challengeDialog { nullptr };
-
+    
     void login(const LoginParams& loginParams);
     void doAuth();
     void normalAuth(QString labelUsername, QString labelPassword, QString authMessage);
     void samlAuth(QString samlMethod, QString samlRequest, QString preloginUrl = "");
     void showChallenge(const QString &responseText);
 };
+
+} // namespace gui
+
+} // namespace gp
 
 #endif // GATEWAYAUTHENTICATOR_H

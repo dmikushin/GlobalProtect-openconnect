@@ -4,6 +4,8 @@
 
 #include "cdpcommand.h"
 
+using namespace gp;
+
 CDPCommand::CDPCommand(QObject *parent) : QObject(parent)
 {
 }

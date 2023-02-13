@@ -1,5 +1,5 @@
-#ifndef SAMLLOGINWINDOW_H
-#define SAMLLOGINWINDOW_H
+#ifndef SAMLLOGINWINDOWGUI_H
+#define SAMLLOGINWINDOWGUI_H
 
 #include <QtCore/QMap>
 #include <QtGui/QCloseEvent>
@@ -7,35 +7,43 @@
 
 #include "enhancedwebview.h"
 
+namespace gp {
+
+namespace gui {
+
 class SAMLLoginWindow : public QDialog
 {
     Q_OBJECT
 
 public:
     explicit SAMLLoginWindow(QWidget *parent = nullptr);
-
+ 
     void login(const QString samlMethod, const QString samlRequest, const QString preloginUrl);
-
+ 
 signals:
     void success(QMap<QString, QString> samlResult);
     void fail(const QString code, const QString msg);
-
+ 
 private slots:
     void onResponseReceived(QJsonObject params);
     void onLoadFinished();
     void checkSamlResult(QString username, QString preloginCookie, QString userAuthCookie);
-
+ 
 private:
     static const auto MAX_WAIT_TIME { 10 * 1000 };
-
+ 
     bool failed { false };
     EnhancedWebView *webView { nullptr };
     QMap<QString, QString> samlResult;
-
+ 
     void closeEvent(QCloseEvent *event);
     void handleHtml(const QString &html);
-
+ 
     static QString parseTag(const QString &tag, const QString &html);
 };
 
-#endif // SAMLLOGINWINDOW_H
+} // namespace gui
+
+} // namespace gp
+
+#endif // SAMLLOGINWINDOWGUI_H

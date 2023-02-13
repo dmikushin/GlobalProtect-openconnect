@@ -4,6 +4,8 @@
 
 #include "preloginresponse.h"
 
+using namespace gp;
+
 QString PreloginResponse::xmlAuthMessage = "authentication-message";
 QString PreloginResponse::xmlLabelUsername = "username-label";
 QString PreloginResponse::xmlLabelPassword = "password-label";

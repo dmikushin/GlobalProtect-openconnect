@@ -6,6 +6,8 @@
 
 #include "vpn.h"
 
+namespace gp {
+
 static QList<QString> binaryPaths = QList<QString>() <<
     "/usr/local/bin/openconnect" <<
     "/usr/local/sbin/openconnect" <<
@@ -17,7 +19,7 @@ static QList<QString> binaryPaths = QList<QString>() <<
 class GPService : public QObject, public IVpn
 {
     Q_OBJECT
-    Q_INTERFACES(IVpn)
+
 public:
     explicit GPService(QObject *parent = nullptr);
     ~GPService();
@@ -60,5 +62,7 @@ private:
     static QString extraOpenconnectArgs(const QString &gateway);
     static QStringList splitCommand(const QString &command);
 };
+
+} // namespace gp
 
 #endif // GLOBALPROTECTSERVICE_H

@@ -4,12 +4,16 @@
 #include <plog/Log.h>
 
 #include "gatewayauthenticator.h"
+#include "standardloginwindow.h"
+#include "challengedialog.h"
 #include "gphelper.h"
 #include "loginparams.h"
 #include "preloginresponse.h"
 #include "challengedialog.h"
+#include "samlloginwindow.h"
 
-using namespace gpclient::helper;
+using namespace gp;
+using namespace gp::helper;
 
 GatewayAuthenticator::GatewayAuthenticator(const QString& gateway, GatewayAuthenticatorParams params)
     : QObject()
@@ -72,7 +76,7 @@ void GatewayAuthenticator::onLoginFinished()
         standardLoginWindow->close();
     }
 
-    const auto params = gpclient::helper::parseGatewayResponse(response);
+    const auto params = gp::helper::parseGatewayResponse(response);
     emit success(params.toString());
 }
 

@@ -5,7 +5,9 @@
 
 #include "cdpcommandmanager.h"
 
-#define ENV_CDP_PORT "QTWEBENGINE_REMOTE_DEBUGGING"
+namespace gp {
+
+namespace gui {
 
 class EnhancedWebView : public QWebEngineView
 {
@@ -25,5 +27,9 @@ private slots:
 private:
     CDPCommandManager *cdp { nullptr };
 };
+
+} // namespace gui
+
+} // namespace gp
 
 #endif // ENHANCEDWEBVIEW_H

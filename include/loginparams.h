@@ -3,6 +3,8 @@
 
 #include <QtCore/QUrlQuery>
 
+namespace gp {
+
 class LoginParams
 {
 public:
@@ -24,5 +26,7 @@ private:
 
     void updateQueryItem(const QString key, const QString value);
 };
+
+} // namespace gp
 
 #endif // LOGINPARAMS_H

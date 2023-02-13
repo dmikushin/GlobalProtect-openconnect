@@ -4,6 +4,8 @@
 
 #include "gpgateway.h"
 
+using namespace gp;
+
 GPGateway::GPGateway()
 {
 }

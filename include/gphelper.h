@@ -8,13 +8,12 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 
-#include "samlloginwindow.h"
 #include "gpgateway.h"
 
+namespace gp {
 
 const QString UA = "PAN GlobalProtect";
 
-namespace gpclient {
     namespace helper {
         extern QNetworkAccessManager *networkManager;
 
@@ -42,6 +41,7 @@ namespace gpclient {
             bool secureGet(const QString &key, QString &value);
         }
     }
-}
+
+} // namespace gp
 
 #endif // GPHELPER_H

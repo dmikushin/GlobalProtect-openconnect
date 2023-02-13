@@ -4,6 +4,8 @@
 #include <QtCore/QString>
 #include <QtCore/QMap>
 
+namespace gp {
+
 class PreloginResponse
 {
 public:
@@ -37,5 +39,7 @@ private:
     void add(const QString name, const QString value);
     bool has(const QString name) const;
 };
+
+} // namespace gp
 
 #endif // PRELOGINRESPONSE_H

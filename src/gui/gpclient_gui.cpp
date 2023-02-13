@@ -1,15 +1,17 @@
 #include <QtGui/QIcon>
 #include <plog/Log.h>
 
-#include "gpclient.h"
+#include "gpclient_gui.h"
 #include "gphelper.h"
-#include "ui_gpclient.h"
+#include "ui_gpclient_gui.h"
 #include "portalauthenticator.h"
 #include "gatewayauthenticator.h"
-#include "settingsdialog.h"
+#include "settingsdialog_gui.h"
 #include "gatewayauthenticatorparams.h"
 
-using namespace gpclient::helper;
+using namespace gp;
+using namespace gp::gui;
+using namespace gp::helper;
 
 GPClient::GPClient(QWidget *parent, IVpn *vpn)
     : QMainWindow(parent)
@@ -21,7 +23,7 @@ GPClient::GPClient(QWidget *parent, IVpn *vpn)
 
     setWindowTitle("GlobalProtect");
     setFixedSize(width(), height());
-    gpclient::helper::moveCenter(this);
+    gp::helper::moveCenter(this);
 
     setupSettings();
 

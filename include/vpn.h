@@ -3,6 +3,8 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 
+namespace gp {
+
 class IVpn
 {
 public:
@@ -11,14 +13,8 @@ public:
     virtual void connect(const QString &server, const QString &username, const QString &passwd) = 0;
     virtual void disconnect() = 0;
     virtual int status() = 0;
-
-// signals: // SIGNALS
-//     virtual void connected();
-//     virtual void disconnected();
-//     virtual void error(const QString &errorMessage);
-//     virtual void logAvailable(const QString &log);
 };
 
-Q_DECLARE_INTERFACE(IVpn, "IVpn") // define this out of namespace scope
+} // namespace gp
 
 #endif

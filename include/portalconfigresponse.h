@@ -7,6 +7,8 @@
 
 #include "gpgateway.h"
 
+namespace gp {
+
 class PortalConfigResponse
 {
 public:
@@ -47,5 +49,7 @@ private:
     static void parsePriorityRule(QXmlStreamReader &reader, GPGateway &gateway);
 
 };
+
+} // namespace gp
 
 #endif // PORTALCONFIGRESPONSE_H

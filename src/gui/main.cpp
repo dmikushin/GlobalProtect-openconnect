@@ -1,19 +1,22 @@
-#include <QtCore/QObject>
-#include <QtCore/QString>
-#include <QtCore/QStandardPaths>
+#include <QCommandLineParser>
+#include <QObject>
+#include <QString>
+#include <QStandardPaths>
 #include <plog/Log.h>
 #include <plog/Init.h>
 #include <plog/Appenders/ColorConsoleAppender.h>
 #include <plog/Formatters/TxtFormatter.h>
 
 #include "singleapplication.h"
-#include "gpclient.h"
-#include "enhancedwebview.h"
+#include "gpclient_gui.h"
 #include "sigwatch.h"
 #include "version.h"
 #include "gpservice.h"
 
 #define QT_AUTO_SCREEN_SCALE_FACTOR "QT_AUTO_SCREEN_SCALE_FACTOR"
+
+using namespace gp;
+using namespace gp::gui;
 
 int main(int argc, char *argv[])
 {

@@ -13,11 +13,12 @@
 
 #include "gphelper.h"
 
+using namespace gp;
 using namespace QKeychain;
 
-QNetworkAccessManager* gpclient::helper::networkManager = new QNetworkAccessManager;
+QNetworkAccessManager* helper::networkManager = new QNetworkAccessManager;
 
-QNetworkReply* gpclient::helper::createRequest(QString url, QByteArray params)
+QNetworkReply* helper::createRequest(QString url, QByteArray params)
 {
     QNetworkRequest request(url);
 
@@ -36,7 +37,7 @@ QNetworkReply* gpclient::helper::createRequest(QString url, QByteArray params)
     return networkManager->post(request, params);
 }
 
-GPGateway gpclient::helper::filterPreferredGateway(QList<GPGateway> gateways, const QString ruleName)
+GPGateway helper::filterPreferredGateway(QList<GPGateway> gateways, const QString ruleName)
 {
     LOGI << gateways.size() << " gateway(s) available, filter the gateways with rule: " << ruleName;
 
@@ -52,7 +53,7 @@ GPGateway gpclient::helper::filterPreferredGateway(QList<GPGateway> gateways, co
     return gateway;
 }
 
-QUrlQuery gpclient::helper::parseGatewayResponse(const QByteArray &xml)
+QUrlQuery helper::parseGatewayResponse(const QByteArray &xml)
 {
     LOGI << "Start parsing the gateway response...";
     LOGI << "The gateway response is: " << xml;
@@ -78,7 +79,7 @@ QUrlQuery gpclient::helper::parseGatewayResponse(const QByteArray &xml)
     return params;
 }
 
-void gpclient::helper::openMessageBox(const QString &message, const QString& informativeText)
+void helper::openMessageBox(const QString &message, const QString& informativeText)
 {
     QMessageBox msgBox;
     msgBox.setWindowTitle("Notice");
@@ -89,7 +90,7 @@ void gpclient::helper::openMessageBox(const QString &message, const QString& inf
     msgBox.exec();
 }
 
-void gpclient::helper::moveCenter(QWidget *widget)
+void helper::moveCenter(QWidget *widget)
 {
     QDesktopWidget *desktop = QApplication::desktop();
 
@@ -111,26 +112,26 @@ void gpclient::helper::moveCenter(QWidget *widget)
     widget->move(x, y);
 }
 
-QSettings *gpclient::helper::settings::_settings = new QSettings("com.yuezk.qt", "GPClient");
+QSettings *helper::settings::_settings = new QSettings("com.yuezk.qt", "GPClient");
 
-QVariant gpclient::helper::settings::get(const QString &key, const QVariant &defaultValue)
+QVariant helper::settings::get(const QString &key, const QVariant &defaultValue)
 {
     return _settings->value(key, defaultValue);
 }
 
-QStringList gpclient::helper::settings::get_all(const QString &key, const QVariant &defaultValue)
+QStringList helper::settings::get_all(const QString &key, const QVariant &defaultValue)
 {
 	QRegularExpression re(key);
 	return 	_settings->allKeys().filter(re);
 }
 
-void gpclient::helper::settings::save(const QString &key, const QVariant &value)
+void helper::settings::save(const QString &key, const QVariant &value)
 {
     _settings->setValue(key, value);
 }
 
 
-void gpclient::helper::settings::clear()
+void helper::settings::clear()
 {
     QStringList keys = _settings->allKeys();
     for (const auto &key : qAsConst(keys)) {
@@ -143,7 +144,7 @@ void gpclient::helper::settings::clear()
 }
 
 
-bool gpclient::helper::settings::secureSave(const QString &key, const QString &value) {
+bool helper::settings::secureSave(const QString &key, const QString &value) {
     WritePasswordJob job( QLatin1String("gpclient") );
     job.setAutoDelete( false );
     job.setKey( key );
@@ -159,7 +160,7 @@ bool gpclient::helper::settings::secureSave(const QString &key, const QString &v
     return true;
 }
 
-bool gpclient::helper::settings::secureGet(const QString &key, QString &value) {
+bool helper::settings::secureGet(const QString &key, QString &value) {
     ReadPasswordJob job( QLatin1String("gpclient") );
     job.setAutoDelete( false );
     job.setKey( key );

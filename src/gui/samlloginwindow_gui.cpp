@@ -4,7 +4,9 @@
 #include <QWebEngineCookieStore>
 #include <plog/Log.h>
 
-#include "samlloginwindow.h"
+#include "samlloginwindow_gui.h"
+
+using namespace gp::gui;
 
 SAMLLoginWindow::SAMLLoginWindow(QWidget *parent)
     : QDialog(parent)

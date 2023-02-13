@@ -3,6 +3,8 @@
 
 #include <QtCore/QObject>
 
+namespace gp {
+
 class CDPCommand : public QObject
 {
     Q_OBJECT
@@ -20,5 +22,7 @@ private:
     QString cmd;
     QVariantMap *params;
 };
+
+} // namespace gp
 
 #endif // CDPCOMMAND_H

@@ -1,8 +1,10 @@
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QPushButton>
 
-#include "challengedialog.h"
-#include "ui_challengedialog.h"
+#include "challengedialog_gui.h"
+#include "ui_challengedialog_gui.h"
+
+using namespace gp::gui;
 
 ChallengeDialog::ChallengeDialog(QWidget *parent) :
     QDialog(parent),

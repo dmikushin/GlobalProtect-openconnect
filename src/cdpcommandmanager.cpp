@@ -3,6 +3,8 @@
 
 #include "cdpcommandmanager.h"
 
+using namespace gp;
+
 CDPCommandManager::CDPCommandManager(QObject *parent)
     : QObject(parent)
     , networkManager(new QNetworkAccessManager)

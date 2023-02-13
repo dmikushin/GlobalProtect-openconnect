@@ -1,5 +1,7 @@
 #include "gatewayauthenticatorparams.h"
 
+using namespace gp;
+
 GatewayAuthenticatorParams::GatewayAuthenticatorParams()
 {
 

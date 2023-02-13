@@ -8,6 +8,8 @@
 #include "INIReader.h"
 #include "gpservice.h"
 
+using namespace gp;
+
 GPService::GPService(QObject *parent)
     : QObject(parent)
     , openconnect(new QProcess)

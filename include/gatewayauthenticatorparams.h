@@ -5,6 +5,8 @@
 
 #include "portalconfigresponse.h"
 
+namespace gp {
+
 class GatewayAuthenticatorParams
 {
 public:
@@ -34,5 +36,7 @@ private:
     QString m_clientos;
     QString m_inputStr;
 };
+
+} // namespace gp
 
 #endif // GATEWAYAUTHENTICATORPARAMS_H

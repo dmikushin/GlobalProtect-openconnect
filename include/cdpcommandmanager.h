@@ -8,6 +8,8 @@
 
 #include "cdpcommand.h"
 
+namespace gp {
+
 class CDPCommandManager : public QObject
 {
     Q_OBJECT
@@ -36,5 +38,7 @@ private slots:
     void onSocketDisconnected();
     void onSocketError(QAbstractSocket::SocketError error);
 };
+
+} // namespace gp
 
 #endif // CDPCOMMANDMANAGER_H

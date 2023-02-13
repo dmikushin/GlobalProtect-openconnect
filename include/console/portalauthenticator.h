@@ -4,10 +4,11 @@
 #include <QtCore/QObject>
 
 #include "portalconfigresponse.h"
-#include "standardloginwindow.h"
-#include "samlloginwindow.h"
 #include "preloginresponse.h"
 
+namespace gp {
+
+class StandardLoginWindow;
 
 class PortalAuthenticator : public QObject
 {
@@ -56,5 +57,7 @@ private:
     void fetchConfig(QString username, QString password, QString preloginCookie = "", QString userAuthCookie = "");
     void emitFail(const QString& msg = "");
 };
+
+} // namespace gp
 
 #endif // PORTALAUTHENTICATOR_H

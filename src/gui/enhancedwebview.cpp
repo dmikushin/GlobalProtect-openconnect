@@ -4,6 +4,8 @@
 #include "enhancedwebview.h"
 #include "cdpcommandmanager.h"
 
+using namespace gp::gui;
+
 EnhancedWebView::EnhancedWebView(QWidget *parent)
     : QWebEngineView(parent)
     , cdp(new CDPCommandManager)

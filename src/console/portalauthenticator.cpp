@@ -10,7 +10,8 @@
 #include "portalconfigresponse.h"
 #include "gpgateway.h"
 
-using namespace gpclient::helper;
+using namespace gp;
+using namespace gp::helper;
 
 PortalAuthenticator::PortalAuthenticator(const QString& portal, const QString& clientos) : QObject()
   , portal(portal)

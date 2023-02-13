@@ -5,6 +5,8 @@
 #include <QtCore/QMap>
 #include <QtCore/QJsonObject>
 
+namespace gp {
+
 class GPGateway
 {
 public:
@@ -29,5 +31,7 @@ private:
     QString _address;
     QMap<QString, int> _priorityRules;
 };
+
+} // namespace gp
 
 #endif // GPGATEWAY_H

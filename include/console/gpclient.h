@@ -1,26 +1,21 @@
 #ifndef GPCLIENT_H
 #define GPCLIENT_H
 
-#include <QtWidgets/QMainWindow>
-#include <QtWidgets/QSystemTrayIcon>
-#include <QtWidgets/QMenu>
-#include <QtWidgets/QPushButton>
+#include <QObject>
 
 #include "portalconfigresponse.h"
 #include "settingsdialog.h"
 #include "vpn.h"
 #include "gatewayauthenticator.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class GPClient; }
-QT_END_NAMESPACE
+namespace gp {
 
 class GPClient : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    GPClient(QWidget *parent, IVpn *vpn);
+    GPClient(IVpn *vpn);
 
     void activate();
     void quit();
@@ -66,20 +61,7 @@ private:
         connected
     };
 
-    Ui::GPClient *ui;
     IVpn *vpn;
-
-    QSystemTrayIcon *systemTrayIcon;
-    QMenu *contextMenu;
-    QAction *openAction;
-    QAction *connectAction;
-
-    QMenu *gatewaySwitchMenu;
-    QAction *clearAction;
-    QAction *quitAction;
-
-    SettingsDialog *settingsDialog;
-    QPushButton *settingsButton;
 
     bool isQuickConnect { false };
     bool isSwitchingGateway { false };
@@ -101,4 +83,7 @@ private:
     QList<GPGateway> allGateways() const;
     void setAllGateways(QList<GPGateway> gateways);
 };
+
+} // namespace gp
+
 #endif // GPCLIENT_H

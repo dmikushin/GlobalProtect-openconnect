@@ -3,6 +3,8 @@
 
 #include "portalconfigresponse.h"
 
+using namespace gp;
+
 QString PortalConfigResponse::xmlUserAuthCookie = "portal-userauthcookie";
 QString PortalConfigResponse::xmlPrelogonUserAuthCookie = "portal-prelogonuserauthcookie";
 QString PortalConfigResponse::xmlGateways = "gateways";

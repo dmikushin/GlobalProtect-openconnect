@@ -3,7 +3,8 @@
 #include "loginparams.h"
 #include "gphelper.h"
 
-using namespace gpclient::helper;
+using namespace gp;
+using namespace gp::helper;
 
 LoginParams::LoginParams(const QString clientos)
 {

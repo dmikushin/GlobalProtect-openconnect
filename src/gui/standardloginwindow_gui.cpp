@@ -1,10 +1,11 @@
 #include <QtGui/QCloseEvent>
 
-#include "standardloginwindow.h"
-#include "ui_standardloginwindow.h"
+#include "standardloginwindow_gui.h"
+#include "ui_standardloginwindow_gui.h"
 #include "gphelper.h"
 
-using namespace gpclient::helper;
+using namespace gp::gui;
+using namespace gp::helper;
 
 StandardLoginWindow::StandardLoginWindow(const QString &portalAddress, const QString &labelUsername,
                                          const QString &labelPassword, const QString &authMessage) :

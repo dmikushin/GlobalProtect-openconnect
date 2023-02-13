@@ -7,6 +7,10 @@ namespace Ui {
 class SettingsDialog;
 }
 
+namespace gp {
+
+namespace gui {
+
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
@@ -27,5 +31,9 @@ public:
 private:
     Ui::SettingsDialog *ui;
 };
+
+} // namespace gui
+
+} // namespace gp
 
 #endif // SETTINGSDIALOG_H

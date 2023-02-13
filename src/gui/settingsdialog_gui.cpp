@@ -1,5 +1,7 @@
-#include "settingsdialog.h"
-#include "ui_settingsdialog.h"
+#include "settingsdialog_gui.h"
+#include "ui_settingsdialog_gui.h"
+
+using namespace gp::gui;
 
 SettingsDialog::SettingsDialog(QWidget *parent) :
     QDialog(parent),

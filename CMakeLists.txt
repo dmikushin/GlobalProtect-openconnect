@@ -39,14 +39,11 @@ add_subdirectory(ThirdParty/SingleApplication)
 configure_file(src/com.yuezk.qt.gpclient.desktop.in com.yuezk.qt.gpclient.desktop)
 configure_file(src/com.yuezk.qt.gpclient.metainfo.xml.in com.yuezk.qt.gpclient.metainfo.xml)
 
-file(GLOB ${PROJECT_NAME}_SRCS "include/*.h" "src/*.cpp" "src/*.qrc")
-add_executable(${PROJECT_NAME} ${${PROJECT_NAME}_SRCS})
+file(GLOB ${PROJECT_NAME}_SRCS "include/*.h" "src/*.cpp")
+add_library(${PROJECT_NAME} STATIC ${${PROJECT_NAME}_SRCS})
 
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_BINARY_DIR}
-    ${QTKEYCHAIN_INCLUDE_DIRS}/qt5keychain
-)
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${QTKEYCHAIN_INCLUDE_DIRS}/qt5keychain)
 
 target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
@@ -61,11 +58,14 @@ target_link_libraries(${PROJECT_NAME}
     ${QTKEYCHAIN_LIBRARIES}
 )
 
-if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0 AND CMAKE_BUILD_TYPE STREQUAL Release)
-    target_compile_options(${PROJECT_NAME} PUBLIC "-ffile-prefix-map=${CMAKE_SOURCE_DIR}=.")
-endif()
+file(GLOB ${PROJECT_NAME}_gui_SRCS "include/gui/*.h" "src/gui/*.cpp" "src/gui/*.qrc")
+add_executable(${PROJECT_NAME}_gui ${${PROJECT_NAME}_gui_SRCS})
+target_compile_definitions(${PROJECT_NAME}_gui PRIVATE ENV_CDP_PORT="QTWEBENGINE_REMOTE_DEBUGGING")
+target_include_directories(${PROJECT_NAME}_gui PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include/gui)
+target_include_directories(${PROJECT_NAME}_gui PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(${PROJECT_NAME}_gui ${PROJECT_NAME})
 
-install(TARGETS ${PROJECT_NAME} DESTINATION bin)
+install(TARGETS ${PROJECT_NAME}_gui DESTINATION bin)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/com.yuezk.qt.gpclient.metainfo.xml" DESTINATION share/metainfo)
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/com.yuezk.qt.gpclient.desktop" DESTINATION share/applications)
 install(FILES "com.yuezk.qt.gpclient.svg" DESTINATION share/icons/hicolor/scalable/apps)
