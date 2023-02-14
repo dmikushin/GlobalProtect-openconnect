@@ -43,8 +43,8 @@ RUN apt-get -y --no-install-recommends install \
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
     mkdir -p /var/run/sshd && \
     bash -c 'install -m755 <(printf "#!/bin/sh\nexit 0") /usr/sbin/policy-rc.d' && \
-    ex +'%s/^#\zeListenAddress/\1/g' -scwq /etc/ssh/sshd_config && \
     ex +'%s/^#\zeHostKey .*ssh_host_.*_key/\1/g' -scwq /etc/ssh/sshd_config && \
+    echo "MaxSessions 2147483647" >> /etc/ssh/sshd_config && \
     RUNLEVEL=1 dpkg-reconfigure openssh-server && \
     ssh-keygen -A -v && \
     update-rc.d ssh defaults
