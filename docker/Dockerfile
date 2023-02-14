@@ -27,20 +27,19 @@ COPY --from=builder /gpagent/install/ /usr
 
 RUN apt-get update
 
-RUN apt-get install -y \
+RUN apt-get -y --no-install-recommends install \
     build-essential \
     libqt5core5a \
     libqt5websockets5 \
-    libqt5webengine5 \
+    libqt5webenginewidgets5 \
     libqt5keychain1 \
-    openconnect
+    openconnect \
+    ca-certificates
 
-RUN apt-get install -y \
+RUN apt-get -y --no-install-recommends install \
     openssh-server \
     sudo \
-    vim && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    vim
 
 # SSH login fix. Otherwise user is kicked off after login
 RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
@@ -52,7 +51,21 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
     ssh-keygen -A -v && \
     update-rc.d ssh defaults
 
-# Start SSH server
-EXPOSE 22
-CMD ["/usr/bin/sudo", "/usr/sbin/sshd", "-D", "-o", "ListenAddress=0.0.0.0"]
+RUN apt-get -y --no-install-recommends install \
+    supervisor && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Create an SSH key for SSH login
+RUN sudo ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N "" && \
+    mv /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+
+# We use supervisor instead of systemd to start multiple applications.
+COPY ./docker/supervisord.conf /etc/
+COPY ./docker/supervisor-log-prefix.sh /
+
+# Start supervisord
+EXPOSE 8080
+EXPOSE 8998
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
