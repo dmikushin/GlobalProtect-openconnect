@@ -48,6 +48,7 @@ sudo ./gpagent
 
 ```
 docker build -t gpagent-docker -f docker/Dockerfile .
+docker-compose up -d
 ```
 
 ## Passing the Custom Parameters to `OpenConnect` CLI

@@ -50,9 +50,7 @@ RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so
     update-rc.d ssh defaults
 
 RUN apt-get -y --no-install-recommends install \
-    supervisor && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    supervisor
 
 # Create an SSH key for SSH login
 RUN sudo ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N "" && \
@@ -68,8 +66,21 @@ COPY --from=builder /gpagent/install/ /usr
 # because all keyrings require D-Bus, which we don't have in container.
 ENV GPAGENT_ALLOW_PLAIN_PASSWORD=1
 
+RUN apt-get -y --no-install-recommends install \
+     git && \
+     apt-get clean && \
+     rm -rf /var/lib/apt/lists/*
+
+# Setup noVNC to access gpagent via web browser.
+WORKDIR /usr/share/
+RUN git clone https://github.com/kanaka/noVNC.git
+RUN ln -s /usr/share/noVNC/vnc_lite.html /usr/share/noVNC/index.html
+WORKDIR /usr/share/noVNC/utils/
+RUN git clone https://github.com/kanaka/websockify
+WORKDIR /root
+ 
 # Start supervisord
 EXPOSE 8080
-EXPOSE 8998
+EXPOSE 8083
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
