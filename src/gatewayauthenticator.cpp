@@ -55,6 +55,9 @@ void GatewayAuthenticator::onLoginFinished()
         if (standardLoginWindow) {
             standardLoginWindow->setProcessing(false);
             openMessageBox("Gateway login failed.", "Please check your credentials and try again.");
+        } else if (isAutoLogin) {
+            isAutoLogin = false;
+            normalAuth();
         } else {
             doAuth();
         }
@@ -97,25 +100,57 @@ void GatewayAuthenticator::onPreloginFinished()
 
     LOGI << "Gateway prelogin succeeded.";
 
-    auto response = PreloginResponse::parse(reply->readAll());
+    preloginResponse = PreloginResponse::parse(reply->readAll());
 
-    if (response.hasSamlAuthFields()) {
-        samlAuth(response.samlMethod(), response.samlRequest(), reply->url().toString());
-    } else if (response.hasNormalAuthFields()) {
-        normalAuth(response.labelUsername(), response.labelPassword(), response.authMessage());
+    if (preloginResponse.hasSamlAuthFields()) {
+        samlAuth(preloginResponse.samlMethod(), preloginResponse.samlRequest(), reply->url().toString());
+    } else if (preloginResponse.hasNormalAuthFields()) {
+        // Do normal username/password authentication
+        tryAutoLogin();
     } else {
-        LOGE << QString("Unknown prelogin response for %1, got %2").arg(preloginUrl, QString::fromUtf8(response.rawResponse()));
+        LOGE << QString("Unknown prelogin response for %1, got %2").arg(preloginUrl,
+            QString::fromUtf8(preloginResponse.rawResponse()));
         emit fail("Unknown response for gateway prelogin interface.");
     }
 
     delete reply;
 }
 
-void GatewayAuthenticator::normalAuth(QString labelUsername, QString labelPassword, QString authMessage)
+void GatewayAuthenticator::tryAutoLogin()
 {
-    LOGI << QString("Trying to perform the normal login with %1 / %2 credentials").arg(labelUsername, labelPassword);
+    {
+        const QString username = settings::get("username").toString();
+        const QString password = settings::get("password").toString();
 
-    standardLoginWindow = new StandardLoginWindow {gateway, labelUsername, labelPassword, authMessage};
+        if (!username.isEmpty() && !password.isEmpty()) {
+            LOGI << "Trying auto login using the saved credentials";
+            isAutoLogin = true;
+            fetchConfig(username, password);
+            return;
+        }
+    }
+
+    {
+        QString username; settings::secureGet("username", username);
+        QString password; settings::secureGet("password", password);
+ 
+        if (!username.isEmpty() && !password.isEmpty()) {
+            LOGI << "Trying auto login using the saved credentials";
+            isAutoLogin = true;
+            fetchConfig(username, password);
+            return;
+        }
+    }
+
+    normalAuth();
+}
+
+void GatewayAuthenticator::normalAuth()
+{
+    LOGI << QString("Trying to perform the normal login with %1 / %2 credentials").arg(
+        preloginResponse.labelUsername(), preloginResponse.labelPassword());
+
+    standardLoginWindow = new StandardLoginWindow {gateway, preloginResponse.labelUsername(), preloginResponse.labelPassword(), preloginResponse.authMessage()};
 
     // Do login
     connect(standardLoginWindow, &StandardLoginWindow::performLogin, this, &GatewayAuthenticator::onPerformStandardLogin);
@@ -130,6 +165,11 @@ void GatewayAuthenticator::onPerformStandardLogin(const QString &username, const
     LOGI << "Start to perform normal login...";
 
     standardLoginWindow->setProcessing(true);
+	fetchConfig(username, password);
+}
+
+void GatewayAuthenticator::fetchConfig(QString username, QString password)
+{
     params.setUsername(username);
     params.setPassword(password);
 

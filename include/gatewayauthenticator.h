@@ -7,6 +7,7 @@
 #include "challengedialog.h"
 #include "loginparams.h"
 #include "gatewayauthenticatorparams.h"
+#include "preloginresponse.h"
 
 class GatewayAuthenticator : public QObject
 {
@@ -34,13 +35,19 @@ private:
     GatewayAuthenticatorParams params;
     QString preloginUrl;
     QString loginUrl;
+    
+    PreloginResponse preloginResponse;
+
+    bool isAutoLogin{ false };
 
     StandardLoginWindow *standardLoginWindow { nullptr };
     ChallengeDialog *challengeDialog { nullptr };
 
     void login(const LoginParams& loginParams);
+    void tryAutoLogin();
     void doAuth();
-    void normalAuth(QString labelUsername, QString labelPassword, QString authMessage);
+    void fetchConfig(QString username, QString password);
+    void normalAuth();
     void samlAuth(QString samlMethod, QString samlRequest, QString preloginUrl = "");
     void showChallenge(const QString &responseText);
 };

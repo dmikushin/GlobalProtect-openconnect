@@ -71,16 +71,31 @@ void PortalAuthenticator::onPreloginFinished()
 
 void PortalAuthenticator::tryAutoLogin()
 {
-    const QString username = settings::get("username").toString();
-    const QString password = settings::get("password").toString();
+    {
+        const QString username = settings::get("username").toString();
+        const QString password = settings::get("password").toString();
 
-    if (!username.isEmpty() && !password.isEmpty()) {
-        LOGI << "Trying auto login using the saved credentials";
-        isAutoLogin = true;
-        fetchConfig(settings::get("username").toString(), settings::get("password").toString());
-    } else {
-        normalAuth();
+        if (!username.isEmpty() && !password.isEmpty()) {
+            LOGI << "Trying auto login using the saved credentials";
+            isAutoLogin = true;
+            fetchConfig(username, password);
+            return;
+        }
     }
+
+    {
+        QString username; settings::secureGet("username", username);
+        QString password; settings::secureGet("password", password);
+ 
+        if (!username.isEmpty() && !password.isEmpty()) {
+            LOGI << "Trying auto login using the saved credentials";
+            isAutoLogin = true;
+            fetchConfig(username, password);
+            return;
+        }
+    }
+
+    normalAuth();
 }
 
 void PortalAuthenticator::normalAuth()
