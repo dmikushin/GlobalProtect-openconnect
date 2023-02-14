@@ -122,8 +122,7 @@ void GPService::connect(const QString &server, const QString &username, const QS
     log(QString("Got extra OpenConnect args for server: %1, %2").arg(server, extraArgs.isEmpty() ? "<empty>" : extraArgs));
 
     QStringList args;
-    args << QCoreApplication::arguments().mid(1)
-         << "--protocol=gp"
+    args << "--protocol=gp"
          << splitCommand(extraArgs)
          << "-u" << username
          << "--cookie-on-stdin"
