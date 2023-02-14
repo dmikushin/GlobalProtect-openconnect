@@ -1,6 +1,6 @@
 # GPAgent: GlobalProtect in a Docker container
 
-This is an implementation of GlobalProtect, which runs in a Docker container and exposes the VPN connection to the users as a SOCKS5 proxy.
+This is an implementation of GlobalProtect VPN client (GUI), which runs in a Docker container and exposes the VPN connection to the users as a SOCKS5 proxy.
 
 Technically, the Docker container runs a fork of [GlobalProtect-openconnect](https://github.com/yuezk/GlobalProtect-openconnect), redesigned to come as a single executable, without client-server separation.
 
