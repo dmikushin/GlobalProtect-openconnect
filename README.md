@@ -41,6 +41,8 @@ sudo apt-get install -y \
 Building:
 
 ```
+git clone --recurse-submodules https://github.com/dmikushin/globalprotect-docker.git
+cd globalprotect-docker
 mkdir build
 cd build
 cmake -G Ninja ..
