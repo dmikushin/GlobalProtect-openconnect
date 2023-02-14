@@ -1,10 +1,10 @@
-# GPAgent: GlobalProtect Single Executable
+# GPAgent: GlobalProtect in a Docker container
 
-This is an implementation of GlobalProtect as a single executable, without client-server separation.
+This is an implementation of GlobalProtect, which runs in a Docker container and exposes the VPN connection to the users as a SOCKS5 proxy.
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/3297602/133869036-5c02b0d9-c2d9-4f87-8c81-e44f68cfd6ac.png">
-</p>
+Technically, the Docker container runs a fork of [GlobalProtect-openconnect](https://github.com/yuezk/GlobalProtect-openconnect), redesigned to come as a single executable, without client-server separation.
+
+<img src="screenshots/screenshot1.png"><img src="screenshots/screenshot2.png">
 
 ## Features
 
@@ -12,8 +12,20 @@ This is an implementation of GlobalProtect as a single executable, without clien
 - Supports both SAML and non-SAML authentication modes.
 - Supports automatically selecting the preferred gateway from the multiple gateways.
 - Supports switching gateway from the system tray menu manually.
+- Memorizes credentials and authenticates automatically without a dialog.
 
-## Prerequisites
+# Docker
+ 
+```
+docker build -t gpagent-docker -f docker/Dockerfile .
+docker-compose up -d
+```
+ 
+ On the first run, navigate to `http://localhost:8083` in the web browser to provide authentication credentials. On subsequent invocations, the container will  try to use the cached credentials.
+
+## Manual Installation
+
+Prerequisites:
 
 ```
 sudo apt-get install -y \
@@ -26,7 +38,7 @@ sudo apt-get install -y \
      openconnect
 ```
 
-## Building
+Building:
 
 ```
 mkdir build
@@ -36,34 +48,13 @@ cmake --build .
 cmake --install .
 ```
 
-## Run
-
-Without client-server separation, we have to run with elevated priviledges:
+Without client-server separation, we binary must be executed with elevated priviledges:
 
 ```
 sudo ./gpagent
 ```
 
-# Docker
-
-```
-docker build -t gpagent-docker -f docker/Dockerfile .
-docker-compose up -d
-```
-
-## Passing the Custom Parameters to `OpenConnect` CLI
-
-See [Configuration](https://github.com/yuezk/GlobalProtect-openconnect/wiki/Configuration)
-
-## Display the system tray icon on Gnome 40
-
-Install the [AppIndicator and KStatusNotifierItem Support](https://extensions.gnome.org/extension/615/appindicator-support/) extension and you will see the system tray icon (Restart the system after the installation).
-
-<p>
-  <img src="https://user-images.githubusercontent.com/3297602/130831022-b93492fd-46dd-4a8e-94a4-13b5747120b7.png" />
-</p>
-
 ## Troubleshooting
 
-Run `gpagent` in the Terminal and collect the logs.
+Run `docker-compose logs` in the Terminal and collect the logs.
 
