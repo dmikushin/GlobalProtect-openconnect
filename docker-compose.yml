@@ -2,8 +2,8 @@ version: '2.4'
  
 services:
   pulse-secure:
-    image: gpagent-docker
-    hostname: gpagent
+    image: globalprotect-docker
+    hostname: globalprotect
     restart: unless-stopped
     tty: true
     volumes:
