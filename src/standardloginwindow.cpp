@@ -25,8 +25,15 @@ StandardLoginWindow::StandardLoginWindow(const QString &portalAddress, const QSt
 
 void StandardLoginWindow::autocomplete() {
     QString username, password;
-    settings::secureGet("username", username);
-    settings::secureGet("password", password);
+    auto allowPlainPassword = getenv("GPAGENT_ALLOW_PLAIN_PASSWORD");
+    if (allowPlainPassword && atoi(allowPlainPassword)) {
+        settings::get("username", username);
+        settings::get("password", password);
+    }
+    else {
+        settings::secureGet("username", username);
+        settings::secureGet("password", password);
+    }
 
     if (!username.isEmpty() && !password.isEmpty()) {
         ui->username->setText(username);
@@ -48,8 +55,15 @@ void StandardLoginWindow::on_loginButton_clicked() {
         return;
     }
 
-    settings::secureSave("username", username);
-    settings::secureSave("password", password);
+    auto allowPlainPassword = getenv("GPAGENT_ALLOW_PLAIN_PASSWORD");
+    if (allowPlainPassword && atoi(allowPlainPassword)) {
+        settings::save("username", username);
+        settings::save("password", password);
+    }
+    else {
+        settings::secureSave("username", username);
+        settings::secureSave("password", password);
+    }
 
     emit performLogin(username, password);
 }
