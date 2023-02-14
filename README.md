@@ -1,4 +1,4 @@
-# GPAgent: GlobalProtect in a Docker container
+# GlobalProtect VPN client (GUI) in a Docker container
 
 This is an implementation of GlobalProtect VPN client (GUI), which runs in a Docker container and exposes the VPN connection to the users as a SOCKS5 proxy.
 
