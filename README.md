@@ -56,7 +56,7 @@ cmake --build .
 sudo cmake --install .
 ```
 
-Without client-server separation, we binary must be executed with elevated priviledges:
+Without client-server separation, the binary must be executed with elevated priviledges:
 
 ```
 sudo ./gpagent
