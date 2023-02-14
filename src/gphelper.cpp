@@ -10,6 +10,7 @@
 #include <QWebEngineProfile>
 #include <QWebEngineCookieStore>
 #include <keychain.h>
+#include <cstdlib>
 
 #include "gphelper.h"
 
@@ -144,6 +145,14 @@ void gpclient::helper::settings::clear()
 
 
 bool gpclient::helper::settings::secureSave(const QString &key, const QString &value) {
+    auto allowPlainPassword = getenv("GPAGENT_ALLOW_PLAIN_PASSWORD");
+    if (allowPlainPassword) {
+        if (atoi(allowPlainPassword)) {
+            settings::save(key, value);
+            return true;
+        }
+    }
+
     WritePasswordJob job( QLatin1String("gpclient") );
     job.setAutoDelete( false );
     job.setKey( key );
@@ -160,6 +169,14 @@ bool gpclient::helper::settings::secureSave(const QString &key, const QString &v
 }
 
 bool gpclient::helper::settings::secureGet(const QString &key, QString &value) {
+    auto allowPlainPassword = getenv("GPAGENT_ALLOW_PLAIN_PASSWORD");
+    if (allowPlainPassword) {
+        if (allowPlainPassword) {
+            value = settings::get(key, "").toString();
+            return true;
+        }
+    }
+
     ReadPasswordJob job( QLatin1String("gpclient") );
     job.setAutoDelete( false );
     job.setKey( key );

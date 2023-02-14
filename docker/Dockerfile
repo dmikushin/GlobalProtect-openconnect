@@ -23,8 +23,6 @@ RUN cd /gpagent && \
 FROM ubuntu:22.10
 ENV DEBIAN_FRONTEND noninteractive
 
-COPY --from=builder /gpagent/install/ /usr
-
 RUN apt-get update
 
 RUN apt-get -y --no-install-recommends install \
@@ -63,6 +61,12 @@ RUN sudo ssh-keygen -t rsa -q -f "/root/.ssh/id_rsa" -N "" && \
 # We use supervisor instead of systemd to start multiple applications.
 COPY ./docker/supervisord.conf /etc/
 COPY ./docker/supervisor-log-prefix.sh /
+
+COPY --from=builder /gpagent/install/ /usr
+
+# Allow plain username/password storage in the configuration folder,
+# because all keyrings require D-Bus, which we don't have in container.
+ENV GPAGENT_ALLOW_PLAIN_PASSWORD=1
 
 # Start supervisord
 EXPOSE 8080
