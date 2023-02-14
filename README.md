@@ -23,7 +23,11 @@ docker build -t gpagent-docker -f docker/Dockerfile .
 docker-compose up -d
 ```
  
- On the first run, navigate to `http://localhost:8083` in the web browser to provide authentication credentials. On subsequent invocations, the container will  try to use the cached credentials.
+On the first run, navigate to `http://localhost:8083` in the web browser to provide authentication credentials. On subsequent invocations, the container will  try to use the cached credentials.
+
+When the connection is established, configure your applications to use the provided SOCKS5 proxy. For example, Firefox:
+
+<img src="screenshots/screenshot3.png">
 
 ## Manual Installation
 
