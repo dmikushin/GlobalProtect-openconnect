@@ -45,7 +45,7 @@ mkdir build
 cd build
 cmake -G Ninja ..
 cmake --build .
-cmake --install .
+sudo cmake --install .
 ```
 
 Without client-server separation, we binary must be executed with elevated priviledges:
