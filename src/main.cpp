@@ -82,8 +82,16 @@ int main(int argc, char *argv[])
 
     if (parser.isSet("now")) {
       w.doConnect();
+      if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+        w.show();
+      } 
     } else if (parser.isSet("start-minimized")) {
-      w.showMinimized();
+      if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+        w.show();
+      }
+      else {
+        w.showMinimized();
+      }
     } else {
       w.show();
     }
