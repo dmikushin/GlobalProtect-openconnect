@@ -1,0 +1,17 @@
+version: '2.4'
+ 
+services:
+  pulse-secure:
+    image: gpagent-docker
+    hostname: gpagent
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - ./config/com.yuezk.qt:/root/.config/com.yuezk.qt
+    devices:
+      - /dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8998:8998
