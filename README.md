@@ -17,6 +17,8 @@ Technically, the Docker container runs a fork of [GlobalProtect-openconnect](htt
 # Docker
  
 ```
+git clone --recurse-submodules https://github.com/dmikushin/globalprotect-docker.git
+cd globalprotect-docker
 docker build -t gpagent-docker -f docker/Dockerfile .
 docker-compose up -d
 ```
