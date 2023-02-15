@@ -1,7 +1,7 @@
 version: '2.4'
  
 services:
-  pulse-secure:
+  globalprotect:
     image: globalprotect-docker
     hostname: globalprotect
     restart: unless-stopped
