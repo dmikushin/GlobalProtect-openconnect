@@ -15,3 +15,10 @@ services:
     ports:
       - 127.0.0.1:8080:8080
       - 127.0.0.1:8083:8083
+    networks:
+      - globalprotect
+
+networks:
+  globalprotect:
+    external: false
+    name: globalprotect
