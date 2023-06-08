@@ -1,4 +1,4 @@
-FROM ubuntu:22.10 AS builder
+FROM ubuntu:22.04 AS builder
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
@@ -20,7 +20,7 @@ RUN cd /gpagent && \
     make -j12 && \
     make install
 
-FROM ubuntu:22.10
+FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update
@@ -67,9 +67,7 @@ COPY --from=builder /gpagent/install/ /usr
 ENV GPAGENT_ALLOW_PLAIN_PASSWORD=1
 
 RUN apt-get -y --no-install-recommends install \
-     git && \
-     apt-get clean && \
-     rm -rf /var/lib/apt/lists/*
+     git
 
 # Setup noVNC to access gpagent via web browser.
 WORKDIR /usr/share/
@@ -78,7 +76,16 @@ RUN ln -s /usr/share/noVNC/vnc_lite.html /usr/share/noVNC/index.html
 WORKDIR /usr/share/noVNC/utils/
 RUN git clone https://github.com/kanaka/websockify
 WORKDIR /root
- 
+
+RUN apt-get -y --no-install-recommends install \
+     dante-server \
+     net-tools && \
+     apt-get clean && \
+     rm -rf /var/lib/apt/lists/*
+
+COPY ./docker/danted.conf.in /etc/
+COPY ./docker/danted.sh /
+
 # Start supervisord
 EXPOSE 8080
 EXPOSE 8083
